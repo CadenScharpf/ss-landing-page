@@ -1,47 +1,26 @@
 import React, { useContext } from 'react'
 import { LayoutContext } from '../../../../../App';
 import officeImageLrg from "../assets/pexels-burst-374147.jpg";
+import { Button, Typography } from '@mui/material';
 
 function Productivity() {
     const lcp = useContext(LayoutContext);
     const DEFAULT_STYLES: Record<string, React.CSSProperties> = {
-        imgLarge: {
-          position: "fixed",
-          top: "0",
-          left: "0",
-          width: "100vw",
-          height: "100vh",
-          zIndex: -1,
-          backgroundImage: `url(${officeImageLrg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "cen",
-        },
-        content: {
-          flexGrow: 1,
-          width: "50%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }
+        
       };
   return (
     <>
-        <div id="imgLarge" style={{ ...DEFAULT_STYLES.imgLarge }} />
-          <div
-            id="ContentLeft"
-            className="Content"
-            style={{...DEFAULT_STYLES.content }}
-          >
-            sdf
-          </div>
-          <div
-            id="ContentRight"
-            className="Content"
-            style={{...DEFAULT_STYLES.content }}
-          >
-            sdf
-          </div>
+        {/* <div id="imgLarge" style={{ ...DEFAULT_STYLES.imgLarge }} /> */}
+        <div style={{display: "flex",flexDirection: 'column', height: "100%", justifyContent: 'center', alignItems: 'center'}}>
+
+ 
+            <Typography variant="h3" sx={{maxWidth: 480, width: "92%"}}>
+                Enhance<br/>new tab capabilities
+            </Typography>
+            <Button variant="outlined" sx={{width: "auto",marginTop: 2, background: 'grey', borderColor: 'white', borderRadius: '25px', color: 'white'}}>
+                Now in Chrome Store
+            </Button>
+        </div>
     </>
   )
 }
