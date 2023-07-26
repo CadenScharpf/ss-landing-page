@@ -1,4 +1,4 @@
-import React, { useImperativeHandle } from "react";
+import React, { useEffect, useImperativeHandle, useRef } from "react";
 import { Categories, ICategory } from "../Categories";
 import { Box, Typography } from "@mui/material";
 import { NavStateContext } from "../Section1";
@@ -12,6 +12,7 @@ interface iCategoryNavProps {
 function CategoryNav(props: iCategoryNavProps) {
   const navStateContext = React.useContext(NavStateContext);
   const menuRefs = React.useRef<CategoryTypeMenuRefType[]>([]);
+  
 
   const categoryTypeMap = Categories.reduce(
     (acc: Record<string, ICategory[]>, category: ICategory) => {
@@ -26,8 +27,6 @@ function CategoryNav(props: iCategoryNavProps) {
 
   const handleFinishedMenuAutoplay = (index: number) => {
     if (navStateContext.autoplay) {
-      console.log("menuRefs len: ", menuRefs.current.length)
-      console.log("handling finished menu autoplay: ", index)
       menuRefs.current[(index+1)%menuRefs.current.length].activate();
     }
   };
@@ -87,13 +86,15 @@ const CategoryTypeMenu = React.forwardRef(
   (props: ICategoryTypeMenuProps, ref) => {
     const [active, setActive] = React.useState(false);
     const itemRefs = React.useRef<CategoryMenuItemRefType[]>([]);
+    const navStateContext = React.useContext(NavStateContext);
 
     const handleFinishedMenuItem = (index: number) => {
 
       if (index === itemRefs.current.length - 1) {
+        setActive(false);
         props.finishedCallback(props.index);
       } else {
-        itemRefs.current[index + 1].activate();
+        if( navStateContext.autoplay){itemRefs.current[index + 1].activate();}
       }
     };
 
@@ -108,10 +109,12 @@ const CategoryTypeMenu = React.forwardRef(
         <Box
           sx={{
             borderBottom: "2px solid white",
+            borderColor: active ? "white" : "rgba(255,255,255,.2)",
             textAlign: "left",
             paddingBottom: 1.1,
             paddingLeft: 2,
             fontweight: active ? "bold" : "",
+            color: active ? "white" : "rgba(255,255,255,.7)",
           }}
         >
           <Typography variant="h5">{props.categoryType}</Typography>
@@ -154,31 +157,58 @@ const CategoryMenuItem = React.forwardRef<
 >((props: ICategoryMenuItemProps, ref) => {
   const navStateContext = React.useContext(NavStateContext);
   const [active, setActive] = React.useState(false);
+  const [touched, setTouched] = React.useState(false);
+  const finishedCallback = props.finishedCallback;
+  const index = props.index;
+  const autoplayRef = React.useRef(navStateContext.autoplay);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
 
   useImperativeHandle(ref, () => ({
     activate() {
+      navStateContext.setCategory(props.category);
       setActive(true);
     },
   }));
 
-  React.useEffect(() => {
-    if (active) {
-      setTimeout(() => {
-        setActive(false);
+  useEffect(() => {
+    // Function to handle the finishing logic
+    const handleFinish = () => {
+      setActive(false);
+      if (navStateContext.autoplay) {
         props.finishedCallback(props.index);
-      }, 6000);
+      }
+    };
+
+    // Clear the previous timeout, if any, when active or navStateContext changes
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-  }, [active, props]);
+
+    // Set a new timeout only if active is true
+    if (active) {
+      timeoutRef.current = setTimeout(handleFinish, 6000);
+    }
+
+    // Clean up the timeout on unmount
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [active, props.index, navStateContext.autoplay]);
 
   const variants = {
     initial: { width: 0, opacity: 1 },
-    animate: { width: "100%", transition: { duration: 6 } },
+    animate: { width: "100%", opacity:1, transition: { duration: 6 } },
     exit: { opacity: 0, transition: { duration: 2 } },
   };
   return (
     <AnimatePresence>
       <Box
         onClick={() => {
+          setTouched(true);
+          navStateContext.setAutoplay(false);
           navStateContext.setCategory(props.category);
         }}
         className="CategoryMenuItem"
@@ -200,7 +230,8 @@ const CategoryMenuItem = React.forwardRef<
             style={{
               position: "absolute",
               left: 0,
-              height: "100%",
+              top: '15%',
+              height: "70%",
               background: "rgba(255,255,255,.2)",
             }}
           ></motion.div>

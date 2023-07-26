@@ -64,7 +64,7 @@ function LandingSection1() {
         autoplay: autoplay,
         setCategory: handleCategoryChange,
         setAutoplay: setAutoplay,
-      }}
+      }} 
     >
       <div id="imgLarge" style={{ ...DEFAULT_STYLES.imgLarge }} />
       <div
@@ -81,4 +81,4 @@ function LandingSection1() {
   );
 }
 
-export default LandingSection1;
+export default LandingSection1; 

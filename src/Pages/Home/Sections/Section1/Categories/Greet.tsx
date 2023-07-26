@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { LayoutContext } from '../../../../../App';
 import officeImageLrg from "../assets/pexels-burst-374147.jpg";
 import { Box, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 
 function Greet() {
     const lcp = useContext(LayoutContext);
@@ -33,9 +34,8 @@ function Greet() {
             className="Content"
             style={{...DEFAULT_STYLES.content }}
           >
-            <Typography variant="h3" sx={DEFAULT_STYLES.text}>
-                
-            Greet customers<br/>with a personal<br/>message
+            <Typography component={motion.h3} initial={{opacity:0,y:-50}} animate={{opacity: 1, y:0, transition: {duration: 1, delay: 0}}} variant="h3" sx={DEFAULT_STYLES.text}>
+              Greet customers<br/>with a personal<br/>message
             </Typography>
           </div>
           <div
@@ -43,9 +43,10 @@ function Greet() {
             className="Content"
             style={{...DEFAULT_STYLES.content }}
           >
-            <Typography variant="h3" sx={DEFAULT_STYLES.text}>
+            <Typography component={motion.h3} initial={{opacity:0,y:50}} animate={{opacity: 1, y:0, transition: {duration: 1, delay: 1}}} variant="h3" sx={DEFAULT_STYLES.text}>
               Show promo or<br/>meeting information
-            </Typography>
+              </Typography>
+            
           </div>
     </Box>
   )

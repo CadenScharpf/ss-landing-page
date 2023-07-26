@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { LayoutContext } from '../../../../../App';
 import officeImageLrg from "../assets/pexels-burst-374147.jpg";
 import { Box, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 
 function CatchUp() {
     const lcp = useContext(LayoutContext);
@@ -33,8 +34,7 @@ function CatchUp() {
             className="Content"
             style={{...DEFAULT_STYLES.content }}
           >
-            <Typography variant="h3" sx={DEFAULT_STYLES.text}>
-                
+            <Typography component={motion.h3} initial={{opacity:0,x:-50}} animate={{opacity: 1, x:0, transition: {duration: 1, delay: 0}}} variant="h3" sx={DEFAULT_STYLES.text}>
               Scroll effectively,<br/>through what<br/>you care about
             </Typography>
           </div>
@@ -43,9 +43,10 @@ function CatchUp() {
             className="Content"
             style={{...DEFAULT_STYLES.content }}
           >
-            <Typography variant="h3" sx={DEFAULT_STYLES.text}>
+            <Typography component={motion.h3} initial={{opacity:0,x:50}} animate={{opacity: 1, x:0, transition: {duration: 1, delay: 1}}} variant="h3" sx={DEFAULT_STYLES.text}>
               Agenda, TODOs,<br/>Notes, News,<br/>Stocks...  
             </Typography>
+            
           </div>
     </Box>
   )

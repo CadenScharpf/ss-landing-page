@@ -5,12 +5,14 @@ import Introduce from "./Categories/Introduce";
 import Productivity from "./Categories/Productivity";
 import Promote from "./Categories/Promote";
 
-import officeImageLrg from "./assets/pexels-burst-374147.jpg";
-import libImageLrg from "./assets/pexels-element-digital-1370296.jpg";
-import tool from "./assets/pexels-suntorn-somtong-1029243.jpg";
-import coffee from "./assets/pexels-pixabay-414579.jpg";
-import mac from "./assets/pexels-negative-space-160107.jpg";
-import meeting from "./assets/pexels-fauxels-3184306.jpg";
+import officeImageLrg from "./assets/dba/digital-home-wallpaper-calendar.jpg";
+import libImageLrg from "./assets/dba/digital-signage-meeting-room-01.jpg";
+import tool from "./assets/dba/digital-signage-restaurant.jpg";
+import coffee from "./assets/dba/digital-signage-waiting-room.jpg";
+import mac from "./assets/dba/personal-dashboard-for-production.jpg";
+import meeting from "./assets/dba/presentboard-mobile-app.jpg";
+
+
 
 export interface ICategory {
   type: string;
